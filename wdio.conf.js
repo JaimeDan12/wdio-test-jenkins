@@ -1,3 +1,44 @@
+const reportportal = require('wdio-reportportal-reporter');
+const RpService = require("wdio-reportportal-service");
+
+const conf = {
+  reportPortalClientConfig: { // report portal settings
+    token: '4204f447-6cca-4b40-9bfd-d4479f674afe',
+    endpoint: 'http://localhost:8080/api/v1',
+    launch: 'ayo_launch',
+    project: 'apitest',
+    mode: 'DEFAULT',
+    debug: false,
+    description: "Launch description text",
+    attributes: [{key:"tag", value: "foo"}],
+    headers: {"foo": "bar"}, // optional headers for internal http client
+    // restClientConfig: { // axios like http client config - https://github.com/axios/axios#request-config
+    //   proxy: {
+    //     protocol: 'https',
+    //     host: '127.0.0.1',
+    //     port: 9000,
+    //     auth: {
+    //       username: 'mikeymike',
+    //       password: 'rapunz3l'
+    //     }
+    //   },
+    //   timeout: 60000
+    // }
+  },
+  reportSeleniumCommands: false, // add selenium commands to log
+  seleniumCommandsLogLevel: 'debug', // log level for selenium commands
+  autoAttachScreenshots: false, // automatically add screenshots
+  screenshotsLogLevel: 'info', // log level for screenshots
+  parseTagsFromTestTitle: false, // parse strings like `@foo` from titles and add to Report Portal
+  cucumberNestedSteps: false, // report cucumber steps as Report Portal steps
+  autoAttachCucumberFeatureToScenario: false, // requires cucumberNestedSteps to be true for use
+  sanitizeErrorMessages: true, // strip color ascii characters from error stacktrace
+  sauceLabOptions : {
+    enabled: true, // automatically add SauseLab ID to rp tags.
+    sldc: "US" // automatically add SauseLab region to rp tags.
+  }
+};
+
 exports.config = {
     //
     // ====================
@@ -70,7 +111,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'silent',
     //
     // Set specific log levels per logger
     // loggers:
@@ -110,7 +151,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
+    // services: ['chromedriver'],
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -132,14 +173,15 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec',['allure', 
-        {
-            outputDir: 'allure-results',
-            disableWebdriverStepsReporting: true,
-            disableWebdriverScreenshotsReporting: true,
-        }
-    ]],
-
+    // reporters: ['spec',['allure', 
+    //     {
+    //         outputDir: 'allure-results',
+    //         disableWebdriverStepsReporting: true,
+    //         disableWebdriverScreenshotsReporting: true,
+    //     }
+    // ]],
+    services: [[RpService, {}]],
+    reporters: [[reportportal, conf]],
 
     
     //

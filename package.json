@@ -10,7 +10,9 @@
         "@wdio/spec-reporter": "^7.20.8",
         "chromedriver": "^104.0.0",
         "wdio-chromedriver-service": "^7.3.2",
-        "wdio-wait-for": "^2.2.6"
+        "wdio-wait-for": "^2.2.6",
+        "wdio-reportportal-reporter": "^7.0.0",
+         "wdio-reportportal-service": "^7.0.0"
     },
     "scripts": {
         "wdio": "wdio run wdio.conf.js",
